@@ -1,10 +1,10 @@
-##CSC365 Final Project
+#### CSC365 Final Project
 
-##Full Stack Web Application
+#### Full Stack Web Application
 
 
 
-This project includes:
+## This project includes:
 
 JSPs
 Bootstrap
