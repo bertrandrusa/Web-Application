@@ -7,10 +7,15 @@
 ## This project includes:
 
 JSPs
+
 Bootstrap
+
 Spring Boot
+
 Embedded H2 Database.
+
 Embedded Apache Tomcat Web Server
+
 Final Project Documentation 
 
 
