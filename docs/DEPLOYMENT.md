@@ -20,12 +20,9 @@ Read upstream docs: https://docs.frappe.io/framework/v15/user/en/tutorial and ht
 3. Clone this temporary feature branch (the project folder is nested within the original repository):
 
 ```bash
-git clone --single-branch --branch feature/gas-station-mis-frappe-mvp \
-    https://github.com/bertrandrusa/Web-Application.git
-cp -R Web-Application/gas_station_mis_project \
-    ~/frappe-bench/apps/gas_station_mis
 cd ~/frappe-bench
-bench pip install -e apps/gas_station_mis
+bench get-app --branch gas-station-mis gas_station_mis \\
+    https://github.com/bertrandrusa/Web-Application.git
 bench --site your-site.localhost install-app gas_station_mis
 bench --site your-site.localhost migrate
 bench --site your-site.localhost clear-cache
