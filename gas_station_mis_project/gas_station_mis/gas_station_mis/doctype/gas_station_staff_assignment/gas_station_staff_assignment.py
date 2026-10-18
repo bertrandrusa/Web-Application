@@ -13,6 +13,10 @@ class GasStationStaffAssignment(Document):
         )
         if duplicate:
             frappe.throw("A user can have only one membership per station.")
+        if self.employee:
+            linked_user = frappe.db.get_value("Employee", self.employee, "user_id")
+            if linked_user and linked_user != self.user:
+                frappe.throw("The employee record is linked to another user.")
 
     def on_update(self):
         if self.enabled:

@@ -2,7 +2,7 @@ app_name = "gas_station_mis"
 app_title = "Gas Station MIS"
 app_publisher = "Gas Station MIS Contributors"
 app_description = "Shift close reporting, approvals, dashboards, and operational alerts"
-app_email = "not-configured@example.invalid"
+app_email = "maintainers@example.invalid"
 app_license = "MIT"
 
 required_apps = ["erpnext", "hrms"]

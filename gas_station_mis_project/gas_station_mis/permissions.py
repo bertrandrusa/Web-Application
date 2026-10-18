@@ -48,47 +48,47 @@ def _condition(doctype, fieldname, user, roles=None):
     names = ", ".join(frappe.db.escape(s) for s in stations)
     return f"`tab{doctype}`.`{fieldname}` IN ({names})"
 
-def station_query(user=None):
+def station_query(user=None, **kwargs):
     return _condition("Gas Station", "name", user)
 
-def schedule_query(user=None):
+def schedule_query(user=None, **kwargs):
     return _condition("Gas Station Shift Schedule", "station", user)
 
-def report_query(user=None):
+def report_query(user=None, **kwargs):
     return _condition("Gas Station Shift Report", "station", user, REPORTERS)
 
-def alert_query(user=None):
+def alert_query(user=None, **kwargs):
     return _condition("Gas Station Alert", "station", user, MANAGEMENT)
 
-def station_permission(doc, user=None, permission_type=None):
+def station_permission(doc, user=None, ptype=None, **kwargs):
     if is_system_manager(user):
         return True
-    if permission_type in ("read", "select", "print", "report", "export"):
+    if ptype in ("read", "select", "print", "report", "export"):
         return bool(membership_roles(doc.name, user))
     return False
 
-def assignment_permission(doc, user=None, permission_type=None):
+def assignment_permission(doc, user=None, ptype=None, **kwargs):
     return is_system_manager(user)
 
-def schedule_permission(doc, user=None, permission_type=None):
+def schedule_permission(doc, user=None, ptype=None, **kwargs):
     if is_system_manager(user):
         return True
-    if permission_type in ("read", "select", "print", "report", "export"):
+    if ptype in ("read", "select", "print", "report", "export"):
         return bool(membership_roles(doc.station, user))
-    return can_manage(doc.station, user) if permission_type in ("create", "write") else False
+    return can_manage(doc.station, user) if ptype in ("create", "write") else False
 
-def report_permission(doc, user=None, permission_type=None):
+def report_permission(doc, user=None, ptype=None, **kwargs):
     if is_system_manager(user):
         return True
-    if permission_type in ("read", "select", "print", "report", "export"):
+    if ptype in ("read", "select", "print", "report", "export"):
         return can_report(doc.station, user)
-    if permission_type == "create":
+    if ptype == "create":
         return can_report(doc.station, user)
-    if permission_type == "write":
+    if ptype == "write":
         return can_report(doc.station, user) and doc.status in ("Draft", "Returned")
     return False
 
-def alert_permission(doc, user=None, permission_type=None):
+def alert_permission(doc, user=None, ptype=None, **kwargs):
     if is_system_manager(user):
         return True
-    return permission_type in ("read", "select", "print", "report", "export") and can_manage(doc.station, user)
+    return ptype in ("read", "select", "print", "report", "export") and can_manage(doc.station, user)

@@ -1,8 +1,9 @@
 """Hourly check for configured shift-close deadlines (site timezone)."""
-from datetime import datetime, timedelta
+from datetime import timedelta
+from gas_station_mis.logic import report_deadline
 
 import frappe
-from frappe.utils import getdate, get_datetime, get_time, now_datetime
+from frappe.utils import getdate, get_datetime, now_datetime
 
 from gas_station_mis.alerts import create_alert
 
@@ -21,9 +22,7 @@ def check_missing_shift_reports():
             continue
         for days_ago in (1, 0):
             day = getdate(now) - timedelta(days=days_ago)
-            due = datetime.combine(day, get_time(schedule.end_time)) + timedelta(
-                minutes=int(schedule.grace_minutes or 0)
-            )
+            due = report_deadline(day, str(schedule.end_time), schedule.grace_minutes or 0)
             if now < due or get_datetime(schedule.creation) > due:
                 continue
             submitted = frappe.db.exists(

@@ -5,6 +5,7 @@ from hashlib import sha256
 import frappe
 from frappe.model.document import Document
 from frappe.utils import getdate
+from gas_station_mis.logic import calculate_shift_totals
 
 MONEY_FIELDS = (
     "opening_cash", "cash_sales", "mobile_money_sales", "card_sales",
@@ -33,11 +34,7 @@ class GasStationShiftReport(Document):
             frappe.throw("Choose an active shift schedule belonging to this station.")
 
         values = {field: amount(self.get(field)) for field in MONEY_FIELDS}
-        self.total_sales = values["cash_sales"] + values["mobile_money_sales"] + values["card_sales"] + values["other_sales"]
-        self.expected_closing_cash = (
-            values["opening_cash"] + values["cash_sales"] - values["cash_expenses"] - values["cash_removed"]
-        )
-        self.cash_difference = values["counted_cash"] - self.expected_closing_cash
+        self.total_sales, self.expected_closing_cash, self.cash_difference = calculate_shift_totals(values)
 
         old = self.get_doc_before_save()
         if not old:
@@ -70,3 +67,7 @@ class GasStationShiftReport(Document):
                 frappe.throw("Approval audit fields cannot be manually edited.")
         elif any(self.get(k) for k in fields):
             frappe.throw("Approval audit fields cannot be supplied on creation.")
+
+    def on_trash(self):
+        if self.status in ("Submitted", "Approved"):
+            frappe.throw("Submitted and approved reports cannot be deleted.")

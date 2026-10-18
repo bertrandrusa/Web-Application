@@ -1,0 +1,31 @@
+name: Gas Station MIS static checks
+
+on:
+  push:
+    branches: ["feature/gas-station-mis-frappe-mvp"]
+    paths:
+      - "gas_station_mis_project/**"
+      - ".github/workflows/gas-station-mis-ci.yml"
+  pull_request:
+    paths:
+      - "gas_station_mis_project/**"
+      - ".github/workflows/gas-station-mis-ci.yml"
+  workflow_dispatch:
+
+jobs:
+  offline-checks:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: gas_station_mis_project
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Check Python syntax
+        run: python -m compileall -q gas_station_mis
+      - name: Run offline unit and metadata tests
+        run: python -m unittest discover -s gas_station_mis/tests -p "test_*.py" -v
+      - name: Check JavaScript syntax
+        run: find gas_station_mis/gas_station_mis -name '*.js' -print0 | xargs -0 -r -n1 node --check
