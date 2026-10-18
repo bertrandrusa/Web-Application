@@ -2,7 +2,7 @@
 from datetime import datetime, timedelta
 
 import frappe
-from frappe.utils import getdate, get_time, now_datetime
+from frappe.utils import getdate, get_datetime, get_time, now_datetime
 
 from gas_station_mis.alerts import create_alert
 
@@ -14,7 +14,7 @@ def check_missing_shift_reports():
     schedules = frappe.get_all(
         "Gas Station Shift Schedule",
         filters={"enabled": 1},
-        fields=["name", "station", "shift_name", "end_time", "grace_minutes"],
+        fields=["name", "station", "shift_name", "end_time", "grace_minutes", "creation"],
     )
     for schedule in schedules:
         if not frappe.db.get_value("Gas Station", schedule.station, "active"):
@@ -24,7 +24,7 @@ def check_missing_shift_reports():
             due = datetime.combine(day, get_time(schedule.end_time)) + timedelta(
                 minutes=int(schedule.grace_minutes or 0)
             )
-            if now < due:
+            if now < due or get_datetime(schedule.creation) > due:
                 continue
             submitted = frappe.db.exists(
                 "Gas Station Shift Report",

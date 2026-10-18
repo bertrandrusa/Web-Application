@@ -5,6 +5,13 @@ from frappe.utils import now_datetime
 def create_alert(station, alert_key, alert_type, message, related_report=None):
     existing = frappe.db.exists("Gas Station Alert", {"alert_key": alert_key})
     if existing:
+        if alert_type == "Approval Required":
+            prior = frappe.get_doc("Gas Station Alert", existing)
+            if prior.status == "Resolved":
+                prior.status = "Open"
+                prior.resolved_by = None
+                prior.resolved_on = None
+                prior.save(ignore_permissions=True)
         return existing
     doc = frappe.get_doc({
         "doctype": "Gas Station Alert",
