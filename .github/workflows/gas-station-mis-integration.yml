@@ -73,7 +73,7 @@ jobs:
           cd "$BENCH_PATH"
           cp -R "$GITHUB_WORKSPACE/gas_station_mis_project" apps/gas_station_mis
           bench pip install -e apps/gas_station_mis
-          grep -qxF gas_station_mis sites/apps.txt || echo gas_station_mis >> sites/apps.txt
+          grep -qxF gas_station_mis sites/apps.txt || { echo; echo gas_station_mis; } >> sites/apps.txt
           bench --site test_site install-app gas_station_mis
           bench --site test_site migrate
       - name: Run Frappe controller workflow smoke test
