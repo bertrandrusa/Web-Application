@@ -1,0 +1,199 @@
+{
+  "actions": [],
+  "doctype": "DocType",
+  "name": "Gas Station Shift Report",
+  "module": "Gas Station MIS",
+  "custom": 0,
+  "istable": 0,
+  "issingle": 0,
+  "editable_grid": 1,
+  "track_changes": 1,
+  "field_order": [
+    "station",
+    "shift_schedule",
+    "report_date",
+    "status",
+    "notes",
+    "opening_cash",
+    "cash_sales",
+    "mobile_money_sales",
+    "card_sales",
+    "other_sales",
+    "total_sales",
+    "cash_expenses",
+    "cash_removed",
+    "counted_cash",
+    "expected_closing_cash",
+    "cash_difference",
+    "submitted_by",
+    "submitted_on",
+    "approved_by",
+    "approved_on",
+    "return_reason"
+  ],
+  "fields": [
+    {
+      "fieldname": "station",
+      "fieldtype": "Link",
+      "label": "Station",
+      "options": "Gas Station",
+      "reqd": 1,
+      "in_list_view": 1,
+      "read_only_depends_on": "eval:doc.status=='Approved'"
+    },
+    {
+      "fieldname": "shift_schedule",
+      "fieldtype": "Link",
+      "label": "Shift Schedule",
+      "options": "Gas Station Shift Schedule",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "report_date",
+      "fieldtype": "Date",
+      "label": "Report Date",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "label": "Status",
+      "options": "Draft\nSubmitted\nReturned\nApproved",
+      "default": "Draft",
+      "read_only": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "notes",
+      "fieldtype": "Small Text",
+      "label": "Shift Notes"
+    },
+    {
+      "fieldname": "opening_cash",
+      "fieldtype": "Currency",
+      "label": "Opening Cash",
+      "default": 0
+    },
+    {
+      "fieldname": "cash_sales",
+      "fieldtype": "Currency",
+      "label": "Cash Sales",
+      "default": 0
+    },
+    {
+      "fieldname": "mobile_money_sales",
+      "fieldtype": "Currency",
+      "label": "Mobile Money Sales",
+      "default": 0
+    },
+    {
+      "fieldname": "card_sales",
+      "fieldtype": "Currency",
+      "label": "Card Sales",
+      "default": 0
+    },
+    {
+      "fieldname": "other_sales",
+      "fieldtype": "Currency",
+      "label": "Other Sales",
+      "default": 0
+    },
+    {
+      "fieldname": "total_sales",
+      "fieldtype": "Currency",
+      "label": "Total Reported Sales",
+      "read_only": 1,
+      "default": 0
+    },
+    {
+      "fieldname": "cash_expenses",
+      "fieldtype": "Currency",
+      "label": "Cash Expenses",
+      "default": 0
+    },
+    {
+      "fieldname": "cash_removed",
+      "fieldtype": "Currency",
+      "label": "Cash Deposits / Withdrawals",
+      "default": 0
+    },
+    {
+      "fieldname": "counted_cash",
+      "fieldtype": "Currency",
+      "label": "Counted Closing Cash",
+      "default": 0
+    },
+    {
+      "fieldname": "expected_closing_cash",
+      "fieldtype": "Currency",
+      "label": "Expected Closing Cash",
+      "read_only": 1,
+      "default": 0
+    },
+    {
+      "fieldname": "cash_difference",
+      "fieldtype": "Currency",
+      "label": "Cash Difference",
+      "read_only": 1,
+      "default": 0
+    },
+    {
+      "fieldname": "submitted_by",
+      "fieldtype": "Link",
+      "label": "Submitted By",
+      "options": "User",
+      "read_only": 1
+    },
+    {
+      "fieldname": "submitted_on",
+      "fieldtype": "Datetime",
+      "label": "Submitted On",
+      "read_only": 1
+    },
+    {
+      "fieldname": "approved_by",
+      "fieldtype": "Link",
+      "label": "Approved By",
+      "options": "User",
+      "read_only": 1
+    },
+    {
+      "fieldname": "approved_on",
+      "fieldtype": "Datetime",
+      "label": "Approved On",
+      "read_only": 1
+    },
+    {
+      "fieldname": "return_reason",
+      "fieldtype": "Small Text",
+      "label": "Reason for Return",
+      "read_only": 1
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1,
+      "report": 1,
+      "export": 1,
+      "print": 1,
+      "email": 1,
+      "share": 1
+    },
+    {
+      "role": "Gas Station User",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "report": 1,
+      "print": 1
+    }
+  ],
+  "autoname": "hash",
+  "search_fields": "station,shift_schedule,report_date,status"
+}

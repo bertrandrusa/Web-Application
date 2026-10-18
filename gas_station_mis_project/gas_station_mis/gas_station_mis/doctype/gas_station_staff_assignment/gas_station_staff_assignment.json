@@ -1,0 +1,73 @@
+{
+  "actions": [],
+  "doctype": "DocType",
+  "name": "Gas Station Staff Assignment",
+  "module": "Gas Station MIS",
+  "custom": 0,
+  "istable": 0,
+  "issingle": 0,
+  "editable_grid": 1,
+  "track_changes": 1,
+  "field_order": [
+    "station",
+    "user",
+    "employee",
+    "station_role",
+    "enabled"
+  ],
+  "fields": [
+    {
+      "fieldname": "station",
+      "fieldtype": "Link",
+      "label": "Station",
+      "options": "Gas Station",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "user",
+      "fieldtype": "Link",
+      "label": "System User",
+      "options": "User",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "employee",
+      "fieldtype": "Link",
+      "label": "HRMS Employee",
+      "options": "Employee"
+    },
+    {
+      "fieldname": "station_role",
+      "fieldtype": "Select",
+      "label": "Station Role",
+      "options": "Manager\nSupervisor\nEmployee",
+      "default": "Employee",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "enabled",
+      "fieldtype": "Check",
+      "label": "Enabled",
+      "default": 1
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1,
+      "report": 1,
+      "export": 1,
+      "print": 1,
+      "email": 1,
+      "share": 1
+    }
+  ],
+  "autoname": "hash",
+  "search_fields": "station,user,employee"
+}

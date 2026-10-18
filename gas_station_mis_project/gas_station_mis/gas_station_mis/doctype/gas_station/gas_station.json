@@ -1,0 +1,75 @@
+{
+  "actions": [],
+  "doctype": "DocType",
+  "name": "Gas Station",
+  "module": "Gas Station MIS",
+  "custom": 0,
+  "istable": 0,
+  "issingle": 0,
+  "editable_grid": 1,
+  "track_changes": 1,
+  "field_order": [
+    "station_name",
+    "company",
+    "address",
+    "active",
+    "cash_variance_threshold"
+  ],
+  "fields": [
+    {
+      "fieldname": "station_name",
+      "fieldtype": "Data",
+      "label": "Station Name",
+      "reqd": 1,
+      "unique": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "company",
+      "fieldtype": "Link",
+      "label": "Company",
+      "options": "Company",
+      "reqd": 1
+    },
+    {
+      "fieldname": "address",
+      "fieldtype": "Small Text",
+      "label": "Address"
+    },
+    {
+      "fieldname": "active",
+      "fieldtype": "Check",
+      "label": "Active",
+      "default": 1
+    },
+    {
+      "fieldname": "cash_variance_threshold",
+      "fieldtype": "Currency",
+      "label": "Cash Variance Alert Threshold",
+      "default": 0,
+      "description": "0 disables variance alerts."
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1,
+      "report": 1,
+      "export": 1,
+      "print": 1,
+      "email": 1,
+      "share": 1
+    },
+    {
+      "role": "Gas Station User",
+      "read": 1,
+      "report": 1
+    }
+  ],
+  "autoname": "field:station_name",
+  "title_field": "station_name",
+  "search_fields": "station_name"
+}

@@ -1,0 +1,21 @@
+import frappe
+from frappe.model.document import Document
+
+class GasStationStaffAssignment(Document):
+    def validate(self):
+        if not frappe.db.get_value("User", self.user, "enabled"):
+            frappe.throw("The selected user must be enabled.")
+        if frappe.db.get_value("User", self.user, "user_type") != "System User":
+            frappe.throw("The selected user must be a System User.")
+        duplicate = frappe.db.exists(
+            "Gas Station Staff Assignment",
+            {"station": self.station, "user": self.user, "name": ["!=", self.name or ""]},
+        )
+        if duplicate:
+            frappe.throw("A user can have only one membership per station.")
+
+    def on_update(self):
+        if self.enabled:
+            user = frappe.get_doc("User", self.user)
+            if "Gas Station User" not in frappe.get_roles(self.user):
+                user.add_roles("Gas Station User")

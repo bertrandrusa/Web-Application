@@ -1,0 +1,100 @@
+{
+  "actions": [],
+  "doctype": "DocType",
+  "name": "Gas Station Alert",
+  "module": "Gas Station MIS",
+  "custom": 0,
+  "istable": 0,
+  "issingle": 0,
+  "editable_grid": 1,
+  "track_changes": 1,
+  "field_order": [
+    "station",
+    "alert_key",
+    "alert_type",
+    "message",
+    "related_report",
+    "status",
+    "resolved_by",
+    "resolved_on"
+  ],
+  "fields": [
+    {
+      "fieldname": "station",
+      "fieldtype": "Link",
+      "label": "Station",
+      "options": "Gas Station",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "alert_key",
+      "fieldtype": "Data",
+      "label": "Deduplication Key",
+      "reqd": 1,
+      "unique": 1
+    },
+    {
+      "fieldname": "alert_type",
+      "fieldtype": "Select",
+      "label": "Alert Type",
+      "options": "Missing Report\nApproval Required\nCash Variance",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "message",
+      "fieldtype": "Small Text",
+      "label": "Message",
+      "reqd": 1
+    },
+    {
+      "fieldname": "related_report",
+      "fieldtype": "Link",
+      "label": "Related Shift Report",
+      "options": "Gas Station Shift Report"
+    },
+    {
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "label": "Status",
+      "options": "Open\nResolved",
+      "default": "Open",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "resolved_by",
+      "fieldtype": "Link",
+      "label": "Resolved By",
+      "options": "User",
+      "read_only": 1
+    },
+    {
+      "fieldname": "resolved_on",
+      "fieldtype": "Datetime",
+      "label": "Resolved On",
+      "read_only": 1
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1,
+      "report": 1,
+      "export": 1,
+      "print": 1,
+      "email": 1,
+      "share": 1
+    },
+    {
+      "role": "Gas Station User",
+      "read": 1,
+      "report": 1
+    }
+  ],
+  "autoname": "hash",
+  "search_fields": "station,alert_type,status"
+}

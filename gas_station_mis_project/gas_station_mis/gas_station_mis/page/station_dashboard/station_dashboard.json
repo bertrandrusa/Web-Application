@@ -1,0 +1,16 @@
+{
+  "doctype": "Page",
+  "name": "station-dashboard",
+  "page_name": "station-dashboard",
+  "module": "Gas Station MIS",
+  "standard": "Yes",
+  "system_page": 0,
+  "roles": [
+    {
+      "role": "Gas Station User"
+    },
+    {
+      "role": "System Manager"
+    }
+  ]
+}
