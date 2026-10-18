@@ -1,0 +1,87 @@
+name: Gas Station MIS standalone Bench integration
+
+on:
+  push:
+    branches: ["gas-station-mis"]
+    paths:
+      - "gas_station_mis/**"
+      - "pyproject.toml"
+      - ".github/workflows/integration.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  install-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    services:
+      mariadb:
+        image: mariadb:10.11
+        env:
+          MARIADB_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mariadb-admin ping -u root -proot"
+          --health-interval=10s --health-timeout=5s --health-retries=10
+      redis-cache:
+        image: redis:7-alpine
+        ports:
+          - 13000:6379
+        options: >-
+          --health-cmd="redis-cli ping" --health-interval=5s --health-timeout=3s --health-retries=10
+      redis-queue:
+        image: redis:7-alpine
+        ports:
+          - 11000:6379
+        options: >-
+          --health-cmd="redis-cli ping" --health-interval=5s --health-timeout=3s --health-retries=10
+      redis-socketio:
+        image: redis:7-alpine
+        ports:
+          - 12000:6379
+        options: >-
+          --health-cmd="redis-cli ping" --health-interval=5s --health-timeout=3s --health-retries=10
+    env:
+      BENCH_PATH: /home/runner/frappe-bench
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+      - name: Prepare Bench prerequisites
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq libmariadb-dev libmariadb-dev-compat redis-tools
+          pip install frappe-bench
+          npm install -g yarn
+      - name: Bootstrap Frappe, ERPNext and Frappe HR v15
+        run: |
+          bench init --frappe-branch version-15 --skip-redis-config-generation --skip-assets --python "$(which python)" "$BENCH_PATH"
+          cd "$BENCH_PATH"
+          bench get-app --branch version-15 erpnext https://github.com/frappe/erpnext
+          bench get-app --branch version-15 hrms https://github.com/frappe/hrms
+          bench new-site test_site --db-root-password root --admin-password admin --db-host 127.0.0.1
+          bench --site test_site install-app erpnext
+          bench --site test_site install-app hrms
+      - name: Install the Gas Station MIS app
+        run: |
+          cd "$BENCH_PATH"
+          bench get-app --branch gas-station-mis gas_station_mis https://github.com/bertrandrusa/Web-Application.git
+          bench --site test_site install-app gas_station_mis
+          bench --site test_site migrate
+      - name: Run Frappe controller workflow smoke test
+        run: |
+          cd "$BENCH_PATH"
+          bench --site test_site execute gas_station_mis.smoke.run
+      - name: Print diagnostics on failure
+        if: failure()
+        run: |
+          if [ -d "$BENCH_PATH/logs" ]; then
+            tail -n 100 "$BENCH_PATH"/logs/*.log || true
+          fi

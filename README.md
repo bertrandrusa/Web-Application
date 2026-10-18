@@ -6,6 +6,12 @@
 
 A gas station operations app that reuses **ERPNext** for business records and **Frappe HR** for employees, shift types and attendance, while adding station-specific shift close processes.
 
+### Verified CI status
+
+- Offline Python, security contract and JavaScript checks: passed on the `gas-station-mis` branch.
+- Installation and core approval workflow: passed in a disposable Frappe 15 + ERPNext 15 + HRMS 15 test site (source-equivalent nested feature branch).
+- Production deployment and live business user acceptance testing: not performed.
+
 ### Implemented in this starter
 
 - Stations linked to an ERPNext Company
@@ -26,7 +32,7 @@ No live POS/pump integration, automatic bank reconciliation, fuel tank control, 
 
 ## Compatibility
 
-Target **Frappe / ERPNext / HRMS version 15** (matching major-version branches). The app has **not been integration tested against a live Bench** in this delivery. Test in a development site before using business data. Versions 16+ may require adjustments.
+Target **Frappe / ERPNext / HRMS version 15** (matching major-version branches). The app **passed a Frappe 15 + ERPNext 15 + HRMS 15 installation and workflow smoke test** in a disposable GitHub Actions environment on October 18, 2026 (see https://github.com/bertrandrusa/Web-Application/actions/runs/39158588789). Real business testing, tenant isolation verification and production hardening remain outstanding. Versions 16+ may require adjustments.
 
 ## Development installation
 

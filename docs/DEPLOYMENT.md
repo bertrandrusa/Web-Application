@@ -1,6 +1,6 @@
 # Gas Station MIS — Deployment playbook
 
-**Deployment state:** The GitHub source branch is prepared, but no cloud server or production site has been provisioned by this project. Never assume the code has passed Bench integration tests just because offline CI is green.
+**Deployment state:** A disposable Frappe 15 + ERPNext 15 + HRMS 15 installation and report-lifecycle smoke test has passed. No production cloud server, hosted site, or real-business test environment has been provisioned. Do not use business data without completing the security and acceptance checklist below.
 
 ## Preferred development platform
 
@@ -17,7 +17,7 @@ Read upstream docs: https://docs.frappe.io/framework/v15/user/en/tutorial and ht
 
 1. Prepare a **fresh** Frappe v15 Bench with MariaDB and Redis (never against production initially).
 2. Install matching ERPNext and HRMS apps and create a site.
-3. Clone this temporary feature branch (the project folder is nested within the original repository):
+3. Install the app directly from the code-only `gas-station-mis` branch:
 
 ```bash
 cd ~/frappe-bench
