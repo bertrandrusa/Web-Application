@@ -16,6 +16,10 @@ def run():
     if missing:
         raise AssertionError("Missing installed DocTypes: " + ", ".join(missing))
 
+    # ERPNext's setup wizard normally seeds this type; a bare CI site may not.
+    if not frappe.db.exists("Warehouse Type", "Transit"):
+        frappe.get_doc({"doctype": "Warehouse Type", "name": "Transit"}).insert(ignore_permissions=True)
+
     company = frappe.db.get_value("Company", {}, "name")
     if not company:
         company = frappe.get_doc({
